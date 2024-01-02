@@ -12,10 +12,9 @@ const PORT = process.env.PORT || 8080;
 // Connect to MongoDB
 (async () => {
   try {
-    await mongoose.connect(
-      process.env.MONGODB_URL, { 
-        useNewUrlParser: true, 
-        useUnifiedTopology: true 
+    await mongoose.connect(process.env.MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
     console.log("Connected to Database");
   } catch (err) {
@@ -44,6 +43,16 @@ app.use("/api/product", productRoutes);
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
+});
+
+// Unhandled Exception Handling
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught Exception:", error);
+});
+
+// Unhandled Rejection Handling
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
 });
 
 // Error handling middleware
