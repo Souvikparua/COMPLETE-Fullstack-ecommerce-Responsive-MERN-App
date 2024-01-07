@@ -8,5 +8,7 @@ const productSchema = mongoose.Schema({
     price: String,
     description: String,
   });
-  
-module.export = productSchema;
+
+// Product model created using product Schema  
+const Product = mongoose.model("product", productSchema);
+module.export = Product;

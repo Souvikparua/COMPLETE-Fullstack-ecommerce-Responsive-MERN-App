@@ -1,30 +1,25 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const connectDB = require('./utils/db')
 require("dotenv").config();
 
 const app = express();
-app.use(cors());
+const PORT = process.env.PORT || 8080;
+const userRoutes = require("./routes/userRoutes");
+const productRoutes = require("./routes/productRoutes");
+
+
+app.use(cors(
+  {credentials: true, origin: '*'}
+));
+
 app.use(express.json({ limit: "10mb" }));
 
-const PORT = process.env.PORT || 8080;
 
 // Connect to MongoDB
-(async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Connected to Database");
-  } catch (err) {
-    console.error(err);
-  }
-})();
 
-// Import user model
-const userSchema = require("./Models/userModel");
-const userModel = mongoose.model("user", userSchema);
+
 
 // Routes
 app.get("/", (req, res) => {
@@ -32,12 +27,13 @@ app.get("/", (req, res) => {
 });
 
 // User Routes
-const userRoutes = require("./Routes/userRoutes")(userModel);
 app.use("/api/user", userRoutes);
 
 // Product Routes
-const productRoutes = require("./Routes/productRoutes");
 app.use("/api/product", productRoutes);
+
+
+
 
 // Middleware for Request Logging
 app.use((req, res, next) => {
@@ -61,5 +57,9 @@ app.use((err, req, res, next) => {
   res.status(500).send({ message: "Internal Server Error", alert: false });
 });
 
+
+connectDB().then(() => {
+  app.listen(PORT, () => console.log(`Server is running at port: ${PORT}`));
+})
+
 // Server is running
-app.listen(PORT, () => console.log(`Server is running at port: ${PORT}`));
