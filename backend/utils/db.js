@@ -13,6 +13,7 @@ const connectDB = async () => {
         console.log("Connection to Databse is successful")
     } catch (error) {
         console.log("Connection to Database is unsuccessful")
+        console.log(error)
     }
 }
 
