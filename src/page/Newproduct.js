@@ -12,9 +12,7 @@ const Newproduct = () => {
   })
 
   
-  const handleSubmit = async(e)=>{
-    e.preventDefault()
-    console.log(data)
+ 
 
     const {name,image,category,price} = data
 
