@@ -1,8 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  status:false,
-  userData:null,
+  _id: "",
+  firstname: "",
+  lastname: "",
+  email: "",
+  image: "",
 };
 
 const userSlice = createSlice({
@@ -10,12 +13,18 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     loginRedux: (state, action) => {
-        state.status=true;
-      state.userData = action.payload;
+      state._id = action.payload.data._id;
+      state.firstname = action.payload.data.firstname;
+      state.lastname = action.payload.data.lastname;
+      state.email = action.payload.data.email;
+      state.image = action.payload.data.image;
     },
-    logoutRedux: (state) => {
-      state.status =false;
-      state.userData=null;
+    logoutRedux: (state,action) => {
+      state._id = "";
+      state.firstname = "";
+      state.lastname = "";
+      state.email = "";
+      state.image = "";
     },
   },
 });
